@@ -58,6 +58,24 @@ final MonalisaClient monalisa_client = MonalisaClient();
   }
 ```
 
+## Troubleshooting
+
+### Minimum SDK version
+
+Because this tool depends on flutter_secure_storage and flutter apps still allow minSdk 16, you might need to upgrade your build.gradle file for Android
+
+The error looks like this
+
+```
+/home/mathieu/projects/cyrus-kl/tasselvr-app/android/app/src/main/AndroidManifest.xml Error:
+	uses-sdk:minSdkVersion 16 cannot be smaller than version 18 declared in library [:flutter_secure_storage] /home/mathieu/projects/cyrus-kl/tasselvr-app/build/flutter_secure_storage/intermediates/manifests/full/debug/AndroidManifest.xml as the library might be using APIs not available in 16
+	Suggestion: use a compatible library with a minSdk of at most 16,
+		or increase this project's minSdk version to at least 18,
+		or use tools:overrideLibrary="com.it_nomads.fluttersecurestorage" to force usage (may lead to runtime failures)
+```
+
+Edit the `android/app/build.gradle` file, find the `minSdkVersion 16` under `defaultConfig`, and make it 18
+
 ## Dart/Flutter package resources
 
 This project is a starting point for a Dart
