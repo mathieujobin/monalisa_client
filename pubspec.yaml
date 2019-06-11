@@ -1,8 +1,8 @@
 name: monalisa_client
 description: A new Flutter package project.
-version: 0.0.2
-author:
-homepage:
+version: 0.0.3
+author: Mathieu Jobin <mathieu@solidcode.bz>
+homepage: https://github.com/mathieujobin/monalisa_client
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -10,7 +10,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_secure_storage:
+  flutter_secure_storage: ^3.2.0
+  http: ^0.12.0
 
 dev_dependencies:
   flutter_test:
