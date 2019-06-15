@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:monalisa_client/monalisa_client.dart';
 
 void main() => runApp(MyApp());
 
@@ -38,6 +39,7 @@ class MyHomePage extends StatefulWidget {
   // always marked "final".
 
   final String title;
+  final MonalisaClient monalisa_client = MonalisaClient();
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -45,6 +47,12 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    monalisa_client.read_local_config().then((data) { return monalisa_client.ensure_user_token(); });
+  }
 
   void _incrementCounter() {
     setState(() {

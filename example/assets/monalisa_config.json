@@ -1,0 +1,7 @@
+{
+  "base_url": "https://monalisa.solidcode.bz",
+  "environment": "example",
+  "client_application_name": "example",
+  "client_application_secret": "uuid"
+}
+
