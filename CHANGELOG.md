@@ -1,3 +1,15 @@
-## [0.0.1] - TODO: Add release date.
+## [0.0.4] - Jun 15th 2019
 
-* TODO: Describe initial release.
+* improve package score, cook up a quick example, no code change since 0.0.2
+
+## [0.0.3] - Jun 11th 2019
+
+* first public release, moved to a package off an application project
+
+## [0.0.2] - Feb 10th 2019
+
+* fix execution bug where setState was called too early
+
+## [0.0.1] - Jan 25th 2019
+
+* first draft connecting to monalisa code, this looks fairly complete
