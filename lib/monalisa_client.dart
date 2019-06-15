@@ -7,18 +7,20 @@ import 'dart:io' show Platform; // http client + Platform
 import 'dart:async'; // Future/async/await;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+/// Client class that manage authentication and speaking with monalisa service.
 class MonalisaClient {
   Map local_config;
   String user_uuid;
   String user_token;
-  //final http_client = new HttpClient();
   FlutterSecureStorage _secure_storage;
   final http.BaseClient httpClient = http.Client();
 
+  /// Utility function, loads a json file in the assets subfolder
   Future<String> load_json_asset(String filename) async {
     return await rootBundle.loadString('assets/$filename.json');
   }
 
+  /// Read and return the content of your monalisa_client config file
   Future<Map> read_local_config() {
     return load_json_asset('monalisa_config').then((data) {
       local_config = json.decode(data);
@@ -26,11 +28,14 @@ class MonalisaClient {
     });
   }
 
+  /*
+  /// NotImplemented, will allow two legged post request to monalisa and other services
   Future two_legged_post() {
 
   }
 
-  /*Future three_legged_get() {
+  /// NotImplemented, will allow three legged get request to monalisa and other services
+  Future three_legged_get() {
     http_client.getUrl(Uri.parse())
         .then((HttpClientRequest request) {
       return request.close();
@@ -38,6 +43,7 @@ class MonalisaClient {
     });
   }*/
 
+  /// Very important method, will initiate a first token creation or verify existing token.
   Future<bool> ensure_user_token() async {
     user_uuid = await stored_user_uuid;
     user_token = await stored_user_token;
@@ -48,6 +54,7 @@ class MonalisaClient {
     }
   }
 
+  /// Used internally by ensure_user_token, you probably don't need to call this yourself.
   Future<bool> token_create() {
     try {
       return httpClient.post(token_create_url, headers: two_legged_auth_headers).then((res) {
@@ -69,20 +76,24 @@ class MonalisaClient {
     }
   }
 
+  /// Used internally by ensure_user_token, you probably don't need to call this yourself.
   Future<bool> token_verify() {
     return httpClient.get(token_verify_url, headers: three_legged_auth_headers).then((res) {
       return res.statusCode == 200;
     });
   }
 
+  /// URL to token create endpoint
   String get token_create_url {
     return local_config["base_url"]+"/api/v1/token";
   }
 
+  /// URL to token verify endpoint
   String get token_verify_url {
     return local_config["base_url"]+"/api/v1/token/verify";
   }
 
+  /// Returns auth headers required to do a two legged request to monalisa
   Map<String, String> get two_legged_auth_headers {
     return {
       'X-SC-CLIENT-PLATFORM': client_platform,
@@ -94,6 +105,7 @@ class MonalisaClient {
     };
   }
 
+  /// Returns auth headers required to do a three legged request to monalisa or other services
   Map<String, String> get three_legged_auth_headers {
     return {
       'X-SC-APP-NAME': app_name,
@@ -103,28 +115,36 @@ class MonalisaClient {
     };
   }
 
+  /// Return your app name
   String get app_name {
     return local_config["client_application_name"];
   }
 
+  /// Return your app secret
   String get app_secret {
     return local_config["client_application_secret"];
   }
 
+  /// Return your stored user uuid
   Future<String> get stored_user_uuid {
     return secure_storage.read(key: 'user_uuid');
   }
 
+  /// Return your stored user token
   Future<String> get stored_user_token {
     return secure_storage.read(key: 'secret_token');
   }
 
+  /// Return a common flutter secure storage instance object
   FlutterSecureStorage get secure_storage {
     if (_secure_storage == null)
       this._secure_storage = new FlutterSecureStorage();
     return _secure_storage;
   }
 
+  /// Return your client platform only if it is iOS or Android
+  ///
+  /// Throw an Exception otherwise
   String get client_platform {
     String os = Platform.operatingSystem;
     if (os != "ios" && os != "android") {
