@@ -40,7 +40,7 @@ class MonalisaClient {
   }
 
   Future<Map> three_legged_post(String url, Map data) {
-    return httpClient.post(url, headers: three_legged_auth_headers, body: json.encode(data)).then((res) {
+    return httpClient.post(local_config["base_url"]+url, headers: three_legged_auth_headers, body: json.encode(data)).then((res) {
       if (res.statusCode == 201) {
         return json.decode(res.body);
       } else {
@@ -50,7 +50,7 @@ class MonalisaClient {
   }
 
   Future<Map> three_legged_get(String url) {
-    return httpClient.get(url, headers: three_legged_auth_headers).then((res) {
+    return httpClient.get(local_config["base_url"]+url, headers: three_legged_auth_headers).then((res) {
       if (res.statusCode == 200) {
         return json.decode(res.body);
       } else {
