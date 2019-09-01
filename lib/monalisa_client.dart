@@ -14,15 +14,26 @@ class MonalisaClient {
   String user_token;
   FlutterSecureStorage _secure_storage;
   final http.BaseClient httpClient = http.Client();
+  final String environment;
+
+  MonalisaClient({this.environment = null});
 
   /// Utility function, loads a json file in the assets subfolder
-  Future<String> load_json_asset(String filename) async {
+  Future<String> load_json_asset() async {
     return await rootBundle.loadString('assets/$filename.json');
+  }
+
+  String get filename {
+    if (environment == null) {
+      return 'monalisa_config';
+    } else {
+      return 'monalisa_config_$environment';
+    }
   }
 
   /// Read and return the content of your monalisa_client config file
   Future<Map> read_local_config() {
-    return load_json_asset('monalisa_config').then((data) {
+    return load_json_asset().then((data) {
       local_config = json.decode(data);
       return local_config;
     });
