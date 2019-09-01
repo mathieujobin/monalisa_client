@@ -1,3 +1,7 @@
+## [0.0.5] - Sep 1st 2019
+* allow to suffix an env to config filename
+* basic get/post three legged hits to monalisa
+
 ## [0.0.4] - Jun 15th 2019
 
 * improve package score, cook up a quick example, no code change since 0.0.2

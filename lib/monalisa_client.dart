@@ -39,20 +39,25 @@ class MonalisaClient {
     });
   }
 
-  /*
-  /// NotImplemented, will allow two legged post request to monalisa and other services
-  Future two_legged_post() {
-
+  Future<Map> three_legged_post(String url, Map data) {
+    return httpClient.post(url, headers: three_legged_auth_headers, body: json.encode(data)).then((res) {
+      if (res.statusCode == 201) {
+        return json.decode(res.body);
+      } else {
+        return <String, dynamic>{"statusCode": res.statusCode, "body": res.body};
+      }
+    });
   }
 
-  /// NotImplemented, will allow three legged get request to monalisa and other services
-  Future three_legged_get() {
-    http_client.getUrl(Uri.parse())
-        .then((HttpClientRequest request) {
-      return request.close();
-    }).then((HttpClientResponse response) {
+  Future<Map> three_legged_get(String url) {
+    return httpClient.get(url, headers: three_legged_auth_headers).then((res) {
+      if (res.statusCode == 200) {
+        return json.decode(res.body);
+      } else {
+        return <String, dynamic>{"statusCode": res.statusCode, "body": res.body};
+      }
     });
-  }*/
+  }
 
   /// Very important method, will initiate a first token creation or verify existing token.
   Future<bool> ensure_user_token() async {
