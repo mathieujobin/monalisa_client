@@ -40,7 +40,12 @@ class MonalisaClient {
   }
 
   Future<Map> three_legged_post(String url, Map data) {
-    return httpClient.post(local_config["base_url"]+url, headers: three_legged_auth_headers, body: json.encode(data)).then((res) {
+    //Map<String, String> post_headers = {"RAW_POST_DATA": json.encode(data)};
+    //post_headers.addAll(three_legged_auth_headers);
+    if (url.substring(0, 7) != "https://") {
+      url = local_config["base_url"]+url;
+    }
+    return httpClient.post(url, headers: three_legged_auth_headers, body: json.encode(data)).then((res) {
       if (res.statusCode == 201) {
         return json.decode(res.body);
       } else {
@@ -112,6 +117,7 @@ class MonalisaClient {
   /// Returns auth headers required to do a two legged request to monalisa
   Map<String, String> get two_legged_auth_headers {
     return {
+      'HTTP_ACCEPT': 'application/json', 'Content-Type': 'application/json',
       'X-SC-CLIENT-PLATFORM': client_platform,
       'X-SC-CLIENT-LOCALE': Platform.localeName,
       'X-SC-CLIENT-VERSION': Platform.version,
@@ -124,6 +130,7 @@ class MonalisaClient {
   /// Returns auth headers required to do a three legged request to monalisa or other services
   Map<String, String> get three_legged_auth_headers {
     return {
+      'HTTP_ACCEPT': 'application/json', 'Content-Type': 'application/json',
       'X-SC-APP-NAME': app_name,
       'X-SC-APP-SECRET': app_secret,
       'X-SC-USER-UUID': user_uuid,
