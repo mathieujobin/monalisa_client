@@ -54,7 +54,7 @@ class MonalisaClient {
     });
   }
 
-  Future<Map> three_legged_get(String url) {
+  Future<dynamic> three_legged_get(String url) {
     return httpClient.get(local_config["base_url"]+url, headers: three_legged_auth_headers).then((res) {
       if (res.statusCode == 200) {
         return json.decode(res.body);
