@@ -77,7 +77,6 @@ class MonalisaClient {
 
   /// Used internally by ensure_user_token, you probably don't need to call this yourself.
   Future<bool> token_create() {
-    try {
       return httpClient.post(token_create_url, headers: two_legged_auth_headers).then((res) {
         if (res.statusCode == 201) {
           Map response_map = json.decode(res.body);
@@ -90,11 +89,6 @@ class MonalisaClient {
           return false;
         }
       });
-    } catch(e, _) {
-      var completer = new Completer();
-      completer.complete(false);
-      return completer.future;
-    }
   }
 
   /// Used internally by ensure_user_token, you probably don't need to call this yourself.
