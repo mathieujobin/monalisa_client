@@ -13,10 +13,10 @@ class MonalisaClient {
   String user_uuid;
   String user_token;
   FlutterSecureStorage _secure_storage;
-  final http.BaseClient httpClient = http.Client();
+  http.BaseClient httpClient = http.Client();
   final String environment;
 
-  MonalisaClient({this.environment = null});
+  MonalisaClient({this.environment});
 
   /// Utility function, loads a json file in the assets subfolder
   Future<String> load_json_asset() async {

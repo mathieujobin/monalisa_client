@@ -26,6 +26,8 @@
 .pub-cache/
 .pub/
 build/
+example/.flutter-plugins-dependencies
+example/ios/Flutter/flutter_export_environment.sh
 
 # Android related
 **/android/**/gradle-wrapper.jar

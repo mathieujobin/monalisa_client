@@ -1,6 +1,6 @@
 name: monalisa_client
 description: Small library to authenticate your Flutter up with Monalisa API/SSO
-version: 0.0.6
+version: 0.0.7
 author: Mathieu Jobin <mathieu@solidcode.bz>
 homepage: https://github.com/mathieujobin/monalisa_client
 

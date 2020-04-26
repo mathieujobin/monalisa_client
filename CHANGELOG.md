@@ -1,3 +1,6 @@
+## [0.0.7] - Apr 27th 2020
+* clean up example app and clear analyzer warnings
+
 ## [0.0.6] - Apr 26th 2020
 * let SocketException be thrown, update README on how to catch within your application
 * release few bug fixes that was only on master
