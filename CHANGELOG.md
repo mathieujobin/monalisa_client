@@ -1,3 +1,7 @@
+## [0.0.6] - Apr 26th 2020
+* let SocketException be thrown, update README on how to catch within your application
+* release few bug fixes that was only on master
+
 ## [0.0.5] - Sep 1st 2019
 * allow to suffix an env to config filename
 * basic get/post three legged hits to monalisa
