@@ -1,3 +1,4 @@
+// ignore_for_file: non_constant_identifier_names
 library monalisa_client;
 
 import 'package:flutter/services.dart' show rootBundle; // rootBundle
