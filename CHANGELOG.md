@@ -1,3 +1,9 @@
+## [0.1.0] - Apr 28th 2020
+* run flutter format, bump to stable release number
+
+## [0.0.8] - Apr 27th 2020
+* only fix linter health issues allowing non_constant_identifier_names which I love for snake_case
+
 ## [0.0.7] - Apr 27th 2020
 * clean up example app and clear analyzer warnings
 

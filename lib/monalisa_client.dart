@@ -44,23 +44,33 @@ class MonalisaClient {
     //Map<String, String> post_headers = {"RAW_POST_DATA": json.encode(data)};
     //post_headers.addAll(three_legged_auth_headers);
     if (url.substring(0, 7) != "https://") {
-      url = local_config["base_url"]+url;
+      url = local_config["base_url"] + url;
     }
-    return httpClient.post(url, headers: three_legged_auth_headers, body: json.encode(data)).then((res) {
+    return httpClient
+        .post(url, headers: three_legged_auth_headers, body: json.encode(data))
+        .then((res) {
       if (res.statusCode == 201) {
         return json.decode(res.body);
       } else {
-        return <String, dynamic>{"statusCode": res.statusCode, "body": res.body};
+        return <String, dynamic>{
+          "statusCode": res.statusCode,
+          "body": res.body
+        };
       }
     });
   }
 
   Future<dynamic> three_legged_get(String url) {
-    return httpClient.get(local_config["base_url"]+url, headers: three_legged_auth_headers).then((res) {
+    return httpClient
+        .get(local_config["base_url"] + url, headers: three_legged_auth_headers)
+        .then((res) {
       if (res.statusCode == 200) {
         return json.decode(res.body);
       } else {
-        return <String, dynamic>{"statusCode": res.statusCode, "body": res.body};
+        return <String, dynamic>{
+          "statusCode": res.statusCode,
+          "body": res.body
+        };
       }
     });
   }
@@ -69,7 +79,10 @@ class MonalisaClient {
   Future<bool> ensure_user_token() async {
     user_uuid = await stored_user_uuid;
     user_token = await stored_user_token;
-    if (user_uuid == null || user_uuid.length != 36 || user_token == null || user_token.length != 36) {
+    if (user_uuid == null ||
+        user_uuid.length != 36 ||
+        user_token == null ||
+        user_token.length != 36) {
       return token_create();
     } else {
       return token_verify();
@@ -78,41 +91,48 @@ class MonalisaClient {
 
   /// Used internally by ensure_user_token, you probably don't need to call this yourself.
   Future<bool> token_create() {
-      return httpClient.post(token_create_url, headers: two_legged_auth_headers).then((res) {
-        if (res.statusCode == 201) {
-          Map response_map = json.decode(res.body);
-          user_uuid = response_map['user_uuid'];
-          user_token = response_map['secret_token'];
-          secure_storage.write(key: 'user_uuid', value: response_map['user_uuid']);
-          secure_storage.write(key: 'secret_token', value: response_map['secret_token']);
-          return true;
-        } else {
-          return false;
-        }
-      });
+    return httpClient
+        .post(token_create_url, headers: two_legged_auth_headers)
+        .then((res) {
+      if (res.statusCode == 201) {
+        Map response_map = json.decode(res.body);
+        user_uuid = response_map['user_uuid'];
+        user_token = response_map['secret_token'];
+        secure_storage.write(
+            key: 'user_uuid', value: response_map['user_uuid']);
+        secure_storage.write(
+            key: 'secret_token', value: response_map['secret_token']);
+        return true;
+      } else {
+        return false;
+      }
+    });
   }
 
   /// Used internally by ensure_user_token, you probably don't need to call this yourself.
   Future<bool> token_verify() {
-    return httpClient.get(token_verify_url, headers: three_legged_auth_headers).then((res) {
+    return httpClient
+        .get(token_verify_url, headers: three_legged_auth_headers)
+        .then((res) {
       return res.statusCode == 200;
     });
   }
 
   /// URL to token create endpoint
   String get token_create_url {
-    return local_config["base_url"]+"/api/v1/token";
+    return local_config["base_url"] + "/api/v1/token";
   }
 
   /// URL to token verify endpoint
   String get token_verify_url {
-    return local_config["base_url"]+"/api/v1/token/verify";
+    return local_config["base_url"] + "/api/v1/token/verify";
   }
 
   /// Returns auth headers required to do a two legged request to monalisa
   Map<String, String> get two_legged_auth_headers {
     return {
-      'HTTP_ACCEPT': 'application/json', 'Content-Type': 'application/json',
+      'HTTP_ACCEPT': 'application/json',
+      'Content-Type': 'application/json',
       'X-SC-CLIENT-PLATFORM': client_platform,
       'X-SC-CLIENT-LOCALE': Platform.localeName,
       'X-SC-CLIENT-VERSION': Platform.version,
@@ -125,7 +145,8 @@ class MonalisaClient {
   /// Returns auth headers required to do a three legged request to monalisa or other services
   Map<String, String> get three_legged_auth_headers {
     return {
-      'HTTP_ACCEPT': 'application/json', 'Content-Type': 'application/json',
+      'HTTP_ACCEPT': 'application/json',
+      'Content-Type': 'application/json',
       'X-SC-APP-NAME': app_name,
       'X-SC-APP-SECRET': app_secret,
       'X-SC-USER-UUID': user_uuid,
@@ -155,8 +176,9 @@ class MonalisaClient {
 
   /// Return a common flutter secure storage instance object
   FlutterSecureStorage get secure_storage {
-    if (_secure_storage == null)
-      this._secure_storage = new FlutterSecureStorage();
+    if (_secure_storage == null) {
+      this._secure_storage = FlutterSecureStorage();
+    }
     return _secure_storage;
   }
 
@@ -166,7 +188,7 @@ class MonalisaClient {
   String get client_platform {
     String os = Platform.operatingSystem;
     if (os != "ios" && os != "android") {
-      throw new Exception("unsupported platform $os");
+      throw Exception("unsupported platform $os");
     }
     return os;
   }
